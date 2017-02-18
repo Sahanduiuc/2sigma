@@ -1,0 +1,213 @@
+0 0.000387171894545 ['fundamental_41', 'fundamental_17', 'fundamental_8', 'fundamental_54', 'fundamental_9']
+349.7s
+103
+1 0.000387207168387 ['fundamental_5', 'technical_28', 'fundamental_50', 'derived_4', 'derived_0']
+350.1s
+104
+2 0.000387208681786 ['fundamental_37', 'fundamental_20', 'fundamental_16', 'technical_25', 'fundamental_26']
+350.5s
+105
+3 0.000387181935366 ['fundamental_58', 'technical_37', 'technical_18', 'fundamental_63', 'fundamental_53']
+351.0s
+106
+4 0.000387205160223 ['technical_14', 'technical_31', 'technical_44', 'fundamental_1', 'fundamental_56']
+351.4s
+107
+5 0.000387185282307 ['fundamental_59', 'fundamental_7', 'fundamental_12', 'fundamental_29', 'technical_17']
+351.8s
+108
+6 0.000387208245229 ['fundamental_57', 'derived_1', 'fundamental_19', 'technical_5', 'fundamental_35']
+352.3s
+109
+7 0.000387207229071 ['technical_34_d', 'technical_33', 'fundamental_51', 'derived_2', 'fundamental_14']
+352.7s
+110
+8 0.000387106851426 ['technical_22_d', 'fundamental_25', 'technical_20_d', 'technical_21', 'technical_34']
+353.1s
+111
+9 0.0003871122899 ['fundamental_46', 'fundamental_32', 'fundamental_0', 'fundamental_39', 'technical_7']
+353.4s
+112
+10 0.000387198961107 ['fundamental_61', 'technical_12', 'technical_10', 'technical_11', 'fundamental_44']
+353.9s
+113
+11 0.000387127132853 ['technical_29', 'fundamental_23', 'fundamental_43', 'technical_30', 'fundamental_6']
+354.3s
+114
+12 0.000387034699088 ['technical_13', 'technical_41', 'technical_20', 'technical_38', 'technical_39']
+354.7s
+115
+13 0.000387194246287 ['fundamental_24', 'fundamental_40', 'fundamental_30', 'fundamental_52', 'nbnulls']
+355.0s
+116
+14 0.000387182895793 ['technical_43', 'technical_6', 'fundamental_55', 'technical_9', 'technical_36']
+370.1s
+117
+[LightGBM] [Info] Number of data: 636908, number of features: 129
+842.2s
+118
+            feature  importance
+111  technical_30_d    4.440597
+82     technical_17    3.300126
+122      neighbour8    2.993187
+86     technical_21    2.552126
+96     technical_33    2.383212
+70      technical_2    2.370837
+103    technical_40    2.316505
+104    technical_41    2.196345
+93     technical_30    2.154767
+121      neighbour7    2.133520
+88     technical_24    2.089371
+84     technical_19    2.043983
+71      technical_3    2.002351
+77     technical_11    1.934508
+85     technical_20    1.917248
+110  technical_20_d    1.829792
+98     technical_35    1.779465
+69      technical_1    1.689635
+125     neighbour11    1.680111
+48   fundamental_44    1.673983
+73      technical_6    1.660806
+116      neighbour2    1.604493
+126     neighbour12    1.602575
+107    technical_44    1.519630
+90     technical_27    1.505560
+72      technical_5    1.456521
+99     technical_36    1.430402
+94     technical_31    1.400923
+118      neighbour4    1.360953
+68      technical_0    1.344959
+127     neighbour13    1.240872
+5     fundamental_0    1.228880
+106    technical_43    1.217605
+66   fundamental_62    1.201900
+12    fundamental_8    1.194679
+78     technical_12    1.164607
+25   fundamental_21    1.116077
+89     technical_25    1.102440
+124     neighbour10    1.085754
+64   fundamental_60    1.066232
+128     neighbour14    1.039269
+45   fundamental_41    1.034300
+14   fundamental_10    1.031139
+43   fundamental_39    1.022133
+46   fundamental_42    1.021795
+33   fundamental_29    0.996521
+120      neighbour6    0.985144
+1         derived_1    0.967162
+115      neighbour1    0.960214
+57   fundamental_53    0.950180
+23   fundamental_19    0.896054
+91     technical_28    0.893950
+108         nbnulls    0.890251
+37   fundamental_33    0.884307
+19   fundamental_15    0.878451
+40   fundamental_36    0.868653
+123      neighbour9    0.867870
+119      neighbour5    0.851383
+114      neighbour0    0.850786
+11    fundamental_7    0.838642
+38   fundamental_34    0.825830
+0         derived_0    0.805865
+117      neighbour3    0.793261
+20   fundamental_16    0.790734
+2         derived_2    0.783207
+18   fundamental_14    0.775478
+4         derived_4    0.771694
+36   fundamental_32    0.770433
+41   fundamental_37    0.756655
+13    fundamental_9    0.728269
+50   fundamental_46    0.720796
+34   fundamental_30    0.711073
+80     technical_14    0.670176
+74      technical_7    0.666181
+9     fundamental_5    0.645067
+27   fundamental_23    0.641996
+63   fundamental_59    0.637043
+112  technical_13_d    0.633070
+3         derived_3    0.628785
+100    technical_37    0.621966
+22   fundamental_18    0.604448
+15   fundamental_11    0.598031
+55   fundamental_51    0.584573
+53   fundamental_49    0.582352
+58   fundamental_54    0.581703
+17   fundamental_13    0.580665
+49   fundamental_45    0.572551
+54   fundamental_50    0.558916
+59   fundamental_55    0.554767
+105    technical_42    0.538855
+21   fundamental_17    0.533182
+7     fundamental_2    0.532915
+39   fundamental_35    0.520513
+47   fundamental_43    0.507210
+52   fundamental_48    0.493813
+29   fundamental_25    0.492416
+62   fundamental_58    0.492315
+92     technical_29    0.490938
+101    technical_38    0.463554
+79     technical_13    0.456601
+60   fundamental_56    0.451792
+16   fundamental_12    0.448417
+26   fundamental_22    0.439142
+95     technical_32    0.433041
+24   fundamental_20    0.424691
+31   fundamental_27    0.404866
+51   fundamental_47    0.395807
+28   fundamental_24    0.394649
+44   fundamental_40    0.369685
+8     fundamental_3    0.367052
+35   fundamental_31    0.296040
+97     technical_34    0.284130
+102    technical_39    0.265869
+83     technical_18    0.252023
+56   fundamental_52    0.235669
+32   fundamental_28    0.228235
+67   fundamental_63    0.223316
+76     technical_10    0.148219
+87     technical_22    0.137927
+6     fundamental_1    0.091323
+30   fundamental_26    0.072133
+75      technical_9    0.056965
+65   fundamental_61    0.041637
+61   fundamental_57    0.036626
+10    fundamental_6    0.030199
+42   fundamental_38    0.029083
+81     technical_16    0.027666
+109  technical_22_d    0.000000
+113  technical_34_d    0.000000
+843.5s
+119
+
+Score for another fold:  0.0521218006899
+end of training, now predicting
+872.1s
+120
+100 11 -0.0837787683121 -0.132592794457
+901.2s
+121
+200 27 -0.203226061721 -0.123314024582
+929.7s
+122
+300 47 -0.0732591274901 -0.11850654084
+959.0s
+123
+400 57 -0.128753593583 -0.122172010981
+989.1s
+124
+500 71 -0.134626124314 -0.123816200357
+1019.1s
+125
+600 85 -0.0581502380649 -0.122541355542
+1049.5s
+126
+700 105 -0.268197417097 -0.127509763192
+1079.7s
+127
+800 121 0.019580686996 -0.129388397326
+1109.7s
+128
+900 136 -0.143354389705 -0.129818856645
+1111.6s
+129
+-0.0126847160815
