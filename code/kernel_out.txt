@@ -1,0 +1,972 @@
+Kaggle
+
+Search kaggle
+Competitions
+Datasets
+Kernels
+Discussion
+Jobs
+
+
+
+helloworld
+Python	
+ Private	
+Cancel
+Submit
+Running - Run Time: 10:03
+
+
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+y_is_above_cut = (train.y > high_y_cut)
+y_is_below_cut = (train.y < low_y_cut)
+y_is_within_cut = (~y_is_above_cut & ~y_is_below_cut)
+train = train.loc[y_is_within_cut, :]
+d_mean = train.median(axis=0)
+train["nbnulls"] = train.isnull().sum(axis=1)
+rnd = 17
+# columns kept for evolution from one month to another (best selected by the tree algorithms)
+add_diff_ft = True
+diff_cols =  ['technical_17', 'technical_30', 'technical_33',
+       'technical_11', 'technical_20', 'technical_21',
+       'technical_2', 'technical_24', 'technical_41', 'technical_3',
+       'technical_19', 'technical_40', 'technical_27', 'technical_6',
+       'technical_35', 'technical_1', 'technical_31', 'fundamental_44']
+# homemade class used to infer randomly on the way the model learns
+# so it basically create output of linear model as new feature
+class createLinearFeatures:
+    def __init__(self, n_neighbours=1, max_elts=None, verbose=True, random_state=None):
+        self.rnd = random_state
+        self.n = n_neighbours
+        self.max_elts = max_elts
+        self.verbose = verbose
+        self.neighbours = []
+        self.clfs = []
+    def fit(self, train, y):
+        if self.rnd != None:
+            random.seed(self.rnd)
+        if self.max_elts == None:
+            self.max_elts = len(train.columns)
+        list_vars = list(train.columns)
+        random.shuffle(list_vars)
+        lastscores = np.zeros(self.n) + 1e15
+        for elt in list_vars[:self.n]:
+            self.neighbours.append([elt])
+        list_vars = list_vars[self.n:]
+        for elt in tqdm(list_vars):  # for each feature
+            indice = 0
+            scores = []
+            for elt2 in self.neighbours:  # for each second feature
+                if len(elt2) < self.max_elts:  # if not enough features for regression
+                    clf = linear_model.LinearRegression(fit_intercept=True, normalize=True, copy_X=True)
+                    clf.fit(train[elt2 + [elt]], y)  # fitting regression and saving score
+                    scores.append(metrics.mean_squared_error(y, clf.predict(train[elt2 + [elt]])))
+                    indice += 1
+                else:
+                    scores.append(lastscores[indice])
+                    indice += 1
+                gc.collect()
+            gains = lastscores - scores
+            if gains.max() > 0:
+                temp = gains.argmax()
+                lastscores[temp] = scores[temp]
+                self.neighbours[temp].append(elt)
+Input
+Log
+Output
+Info
+Version 64
+Time
+Line #
+Log Message
+2.0s
+1
+Fontconfig warning: ignoring C.UTF-8: not a valid language tag
+20.3s
+2
+adding new features
+20.4s
+3
+
+  0%|          | 0/89 [00:00<?, ?it/s]
+26.7s
+4
+
+  1%|          | 1/89 [00:06<09:08,  6.24s/it]
+33.7s
+5
+
+  2%|▏         | 2/89 [00:13<09:22,  6.47s/it]
+39.2s
+6
+
+  3%|▎         | 3/89 [00:18<08:51,  6.18s/it]
+46.6s
+7
+
+  4%|▍         | 4/89 [00:26<09:16,  6.54s/it]
+53.0s
+8
+
+  6%|▌         | 5/89 [00:32<09:06,  6.50s/it]
+58.2s
+9
+
+  7%|▋         | 6/89 [00:37<08:27,  6.11s/it]
+63.7s
+10
+
+  8%|▊         | 7/89 [00:43<08:05,  5.92s/it]
+69.6s
+11
+
+  9%|▉         | 8/89 [00:49<07:59,  5.92s/it]
+76.4s
+12
+
+ 10%|█         | 9/89 [00:55<08:14,  6.18s/it]
+82.3s
+13
+
+ 11%|█         | 10/89 [01:01<08:01,  6.10s/it]
+88.1s
+14
+
+ 12%|█▏        | 11/89 [01:07<07:48,  6.01s/it]
+94.2s
+15
+
+ 13%|█▎        | 12/89 [01:13<07:44,  6.04s/it]
+100.7s
+16
+
+ 15%|█▍        | 13/89 [01:20<07:49,  6.18s/it]
+107.4s
+17
+
+ 16%|█▌        | 14/89 [01:26<07:55,  6.33s/it]
+114.3s
+18
+
+ 17%|█▋        | 15/89 [01:33<08:01,  6.50s/it]
+121.3s
+19
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+20
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+21
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+22
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+23
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+24
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+25
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+121.3s
+26
+
+ 18%|█▊        | 16/89 [01:40<08:05,  6.66s/it]
+128.4s
+27
+
+ 19%|█▉        | 17/89 [01:47<08:09,  6.79s/it]
+134.4s
+28
+
+ 20%|██        | 18/89 [01:53<07:45,  6.55s/it]
+142.6s
+29
+
+ 21%|██▏       | 19/89 [02:02<08:12,  7.04s/it]
+148.5s
+30
+
+ 22%|██▏       | 20/89 [02:07<07:40,  6.67s/it]
+155.1s
+31
+
+ 24%|██▎       | 21/89 [02:14<07:34,  6.68s/it]
+163.5s
+32
+
+ 25%|██▍       | 22/89 [02:23<08:02,  7.19s/it]
+170.5s
+33
+
+ 26%|██▌       | 23/89 [02:30<07:51,  7.14s/it]
+177.5s
+34
+
+ 27%|██▋       | 24/89 [02:37<07:40,  7.09s/it]
+184.8s
+35
+
+ 28%|██▊       | 25/89 [02:44<07:37,  7.15s/it]
+193.5s
+36
+
+ 29%|██▉       | 26/89 [02:53<08:00,  7.62s/it]
+200.9s
+37
+
+ 30%|███       | 27/89 [03:00<07:48,  7.55s/it]
+206.9s
+38
+
+ 31%|███▏      | 28/89 [03:06<07:12,  7.09s/it]
+214.5s
+39
+
+ 33%|███▎      | 29/89 [03:14<07:14,  7.25s/it]
+221.7s
+40
+
+ 34%|███▎      | 30/89 [03:21<07:06,  7.23s/it]
+229.5s
+41
+
+ 35%|███▍      | 31/89 [03:29<07:09,  7.40s/it]
+237.2s
+42
+
+ 36%|███▌      | 32/89 [03:36<07:06,  7.48s/it]
+244.1s
+43
+
+ 37%|███▋      | 33/89 [03:43<06:49,  7.31s/it]
+251.1s
+44
+
+ 38%|███▊      | 34/89 [03:50<06:37,  7.22s/it]
+258.8s
+45
+
+ 39%|███▉      | 35/89 [03:58<06:37,  7.36s/it]
+266.3s
+46
+
+ 40%|████      | 36/89 [04:05<06:32,  7.40s/it]
+273.1s
+47
+
+ 42%|████▏     | 37/89 [04:12<06:15,  7.23s/it]
+280.1s
+48
+
+ 43%|████▎     | 38/89 [04:19<06:04,  7.15s/it]
+287.1s
+49
+
+ 44%|████▍     | 39/89 [04:26<05:55,  7.11s/it]
+294.8s
+50
+
+ 45%|████▍     | 40/89 [04:34<05:57,  7.29s/it]
+300.9s
+51
+
+ 46%|████▌     | 41/89 [04:40<05:32,  6.93s/it]
+306.9s
+52
+
+ 47%|████▋     | 42/89 [04:46<05:12,  6.65s/it]
+312.9s
+53
+
+ 48%|████▊     | 43/89 [04:52<04:57,  6.46s/it]
+318.9s
+54
+
+ 49%|████▉     | 44/89 [04:58<04:44,  6.32s/it]
+324.7s
+55
+
+ 51%|█████     | 45/89 [05:04<04:31,  6.16s/it]
+330.9s
+56
+
+ 52%|█████▏    | 46/89 [05:10<04:25,  6.17s/it]
+338.2s
+57
+
+ 53%|█████▎    | 47/89 [05:17<04:33,  6.52s/it]
+344.8s
+58
+
+ 54%|█████▍    | 48/89 [05:24<04:28,  6.54s/it]
+351.5s
+59
+
+ 55%|█████▌    | 49/89 [05:31<04:23,  6.58s/it]
+358.2s
+60
+
+ 56%|█████▌    | 50/89 [05:37<04:18,  6.62s/it]
+363.0s
+61
+
+ 57%|█████▋    | 51/89 [05:42<03:50,  6.07s/it]
+368.6s
+62
+
+ 58%|█████▊    | 52/89 [05:48<03:39,  5.94s/it]
+373.0s
+63
+
+ 60%|█████▉    | 53/89 [05:52<03:16,  5.47s/it]
+377.6s
+64
+
+ 61%|██████    | 54/89 [05:57<03:02,  5.21s/it]
+381.7s
+65
+
+ 62%|██████▏   | 55/89 [06:01<02:45,  4.88s/it]
+388.5s
+66
+
+ 63%|██████▎   | 56/89 [06:08<03:00,  5.46s/it]
+392.7s
+67
+
+ 64%|██████▍   | 57/89 [06:12<02:42,  5.08s/it]
+396.2s
+68
+
+ 65%|██████▌   | 58/89 [06:15<02:22,  4.61s/it]
+400.8s
+69
+
+ 66%|██████▋   | 59/89 [06:20<02:18,  4.60s/it]
+404.8s
+70
+
+ 67%|██████▋   | 60/89 [06:24<02:08,  4.42s/it]
+408.7s
+71
+
+ 69%|██████▊   | 61/89 [06:28<01:59,  4.26s/it]
+412.6s
+72
+
+ 70%|██████▉   | 62/89 [06:32<01:52,  4.16s/it]
+416.1s
+73
+
+ 71%|███████   | 63/89 [06:35<01:42,  3.96s/it]
+419.1s
+74
+
+ 72%|███████▏  | 64/89 [06:38<01:31,  3.67s/it]
+422.0s
+75
+
+ 73%|███████▎  | 65/89 [06:41<01:22,  3.46s/it]
+425.2s
+76
+
+ 74%|███████▍  | 66/89 [06:44<01:17,  3.36s/it]
+428.2s
+77
+
+ 75%|███████▌  | 67/89 [06:47<01:11,  3.27s/it]
+431.2s
+78
+
+ 76%|███████▋  | 68/89 [06:50<01:06,  3.18s/it]
+433.3s
+79
+
+ 78%|███████▊  | 69/89 [06:52<00:57,  2.87s/it]
+435.4s
+80
+
+ 79%|███████▊  | 70/89 [06:54<00:49,  2.62s/it]
+437.5s
+81
+
+ 80%|███████▉  | 71/89 [06:57<00:44,  2.49s/it]
+439.7s
+82
+
+ 81%|████████  | 72/89 [06:59<00:40,  2.39s/it]
+441.6s
+83
+
+ 82%|████████▏ | 73/89 [07:01<00:36,  2.25s/it]
+443.8s
+84
+
+ 83%|████████▎ | 74/89 [07:03<00:33,  2.22s/it]
+445.6s
+85
+
+ 84%|████████▍ | 75/89 [07:05<00:29,  2.10s/it]
+447.4s
+86
+
+ 85%|████████▌ | 76/89 [07:06<00:26,  2.01s/it]
+448.8s
+87
+
+ 87%|████████▋ | 77/89 [07:08<00:21,  1.83s/it]
+450.0s
+88
+
+ 88%|████████▊ | 78/89 [07:09<00:18,  1.64s/it]
+451.0s
+89
+
+ 89%|████████▉ | 79/89 [07:10<00:14,  1.45s/it]
+452.0s
+90
+
+ 90%|████████▉ | 80/89 [07:11<00:11,  1.27s/it]
+452.3s
+91
+
+ 91%|█████████ | 81/89 [07:11<00:08,  1.02s/it]
+452.7s
+92
+
+ 92%|█████████▏| 82/89 [07:12<00:05,  1.19it/s]
+453.1s
+93
+
+ 93%|█████████▎| 83/89 [07:12<00:04,  1.41it/s]
+453.5s
+94
+
+ 94%|█████████▍| 84/89 [07:13<00:03,  1.65it/s]
+453.9s
+95
+
+ 96%|█████████▌| 85/89 [07:13<00:02,  1.84it/s]
+454.3s
+96
+
+ 97%|█████████▋| 86/89 [07:13<00:01,  2.01it/s]
+454.7s
+97
+
+ 98%|█████████▊| 87/89 [07:14<00:00,  2.12it/s]
+455.1s
+98
+
+ 99%|█████████▉| 88/89 [07:14<00:00,  2.18it/s]
+455.7s
+99
+0 0.000387191186114 ['technical_41_d', 'fundamental_54', 'fundamental_30', 'fundamental_43', 'fundamental_15']
+456.1s
+100
+1 0.000387127504532 ['technical_12', 'technical_29', 'fundamental_44_d', 'technical_2', 'technical_44']
+456.3s
+101
+2 0.000387143722037 ['technical_7', 'technical_28', 'fundamental_59', 'technical_37', 'fundamental_23']
+456.5s
+102
+3 0.000387114851037 ['technical_31', 'fundamental_24', 'technical_25', 'technical_5', 'technical_0']
+456.7s
+103
+4 0.000387192412745 ['fundamental_48', 'technical_14', 'fundamental_44', 'technical_11', 'fundamental_35']
+456.9s
+104
+5 0.000387193547795 ['fundamental_2', 'technical_43', 'fundamental_33', 'fundamental_18', 'fundamental_55']
+457.2s
+105
+6 0.000387185123375 ['technical_6', 'fundamental_31', 'fundamental_13', 'technical_1_d', 'fundamental_56']
+457.5s
+106
+7 0.000387178179425 ['technical_33_d', 'fundamental_0', 'fundamental_62', 'fundamental_53', 'technical_17']
+457.9s
+107
+8 0.000387185664588 ['fundamental_8', 'technical_2_d', 'fundamental_19', 'fundamental_5', 'fundamental_17']
+458.1s
+108
+9 0.000387100784495 ['technical_35_d', 'fundamental_11', 'technical_40_d', 'technical_19_d', 'fundamental_25']
+458.3s
+109
+10 0.000387157633668 ['technical_1', 'fundamental_32', 'technical_42', 'technical_3', 'technical_35']
+458.6s
+110
+11 0.000387208997592 ['fundamental_45', 'technical_33', 'fundamental_52', 'fundamental_7', 'technical_3_d']
+458.8s
+111
+12 0.00038716304698 ['technical_41', 'fundamental_16', 'fundamental_47', 'fundamental_29', 'fundamental_14']
+459.1s
+112
+13 0.000387167034205 ['fundamental_21', 'technical_24', 'fundamental_10', 'technical_16', 'technical_19']
+459.3s
+113
+14 0.000387161763847 ['technical_6_d', 'fundamental_37', 'technical_30_d', 'fundamental_51', 'technical_11_d']
+459.6s
+114
+15 0.000387203559512 ['fundamental_60', 'fundamental_49', 'derived_2', 'fundamental_34', 'fundamental_39']
+459.8s
+115
+16 0.000387071167646 ['technical_20_d', 'fundamental_12', 'technical_31_d', 'derived_3', 'technical_38']
+460.1s
+116
+17 0.000387192965718 ['fundamental_20', 'technical_21', 'fundamental_36', 'technical_27', 'technical_30']
+460.4s
+117
+18 0.000387177724843 ['technical_17_d', 'derived_4', 'technical_21_d', 'derived_0', 'fundamental_46']
+460.6s
+118
+19 0.000387152889743 ['derived_1', 'technical_36', 'fundamental_40', 'technical_20', 'technical_40']
+455.5s
+119
+
+100%|██████████| 89/89 [07:15<00:00,  2.24it/s]
+476.3s
+120
+[LightGBM] [Info] Number of data: 636908, number of features: 129
+477.8s
+121
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+478.7s
+122
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+479.5s
+123
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+481.1s
+124
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+481.7s
+125
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+482.9s
+126
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+484.1s
+127
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+484.8s
+128
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+485.6s
+129
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+487.1s
+130
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+487.6s
+131
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+488.8s
+132
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+489.9s
+133
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+490.6s
+134
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+491.8s
+135
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+492.7s
+136
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+494.1s
+137
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+494.7s
+138
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+496.1s
+139
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+496.8s
+140
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+497.4s
+141
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+498.6s
+142
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+499.0s
+143
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+499.8s
+144
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+500.7s
+145
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+501.4s
+146
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+502.6s
+147
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+503.2s
+148
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+504.1s
+149
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+505.3s
+150
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+506.0s
+151
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+506.9s
+152
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+507.5s
+153
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+507.5s
+154
+
+508.5s
+155
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+508.5s
+156
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+509.4s
+157
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+510.2s
+158
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+512.0s
+159
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+512.7s
+160
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+513.1s
+161
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+514.0s
+162
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+514.8s
+163
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+515.4s
+164
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+516.2s
+165
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+517.0s
+166
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+517.8s
+167
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+519.0s
+168
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+519.9s
+169
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+520.9s
+170
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+521.6s
+171
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+522.2s
+172
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+523.0s
+173
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+523.8s
+174
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+524.7s
+175
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+525.2s
+176
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+525.9s
+177
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+526.5s
+178
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+528.0s
+179
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+528.5s
+180
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+528.9s
+181
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+529.6s
+182
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+530.1s
+183
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+530.7s
+184
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+532.1s
+185
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+532.7s
+186
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+533.4s
+187
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+534.3s
+188
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+535.1s
+189
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+535.9s
+190
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+537.9s
+191
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+539.0s
+192
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+539.7s
+193
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+545.0s
+194
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+549.5s
+195
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 15
+550.1s
+196
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 16
+550.5s
+197
+[LightGBM] [Info] No further splits with positive gain, best gain: -inf, leaves: 13
+550.8s
+198
+              feature  importance
+71       technical_20    6.278963
+125       neighbour16    5.990079
+78       technical_30    5.407592
+111        neighbour2    3.346598
+118        neighbour9    3.212003
+26     fundamental_29    1.816535
+85       technical_40    1.702057
+105    technical_35_d    1.501227
+51     fundamental_55    1.187943
+123       neighbour14    1.104057
+82       technical_36    1.090770
+49     fundamental_53    1.033124
+33     fundamental_36    1.010863
+97      technical_2_d    1.002554
+112        neighbour3    0.966461
+95     technical_20_d    0.672887
+102    technical_40_d    0.510615
+94     technical_11_d    0.483130
+70       technical_19    0.430029
+81       technical_35    0.381083
+104     technical_6_d    0.380353
+120       neighbour11    0.345637
+53     fundamental_58    0.291816
+14     fundamental_14    0.284463
+5       fundamental_0    0.255005
+39     fundamental_43    0.253991
+128       neighbour19    0.223147
+47     fundamental_51    0.139992
+8       fundamental_7    0.139542
+127       neighbour18    0.116390
+56     fundamental_62    0.114122
+110        neighbour1    0.105867
+122       neighbour13    0.083530
+11     fundamental_11    0.059070
+21     fundamental_21    0.056956
+92     technical_30_d    0.054476
+103    technical_27_d    0.048021
+55     fundamental_60    0.020546
+108  fundamental_44_d    0.019828
+86       technical_41    0.017720
+124       neighbour15    0.017182
+121       neighbour12    0.000000
+79       technical_31    0.000000
+83       technical_37    0.000000
+84       technical_38    0.000000
+126       neighbour17    0.000000
+77       technical_29    0.000000
+76       technical_28    0.000000
+75       technical_27    0.000000
+74       technical_25    0.000000
+87       technical_42    0.000000
+80       technical_33    0.000000
+119       neighbour10    0.000000
+88       technical_43    0.000000
+114        neighbour5    0.000000
+106     technical_1_d    0.000000
+109        neighbour0    0.000000
+113        neighbour4    0.000000
+101    technical_19_d    0.000000
+73       technical_24    0.000000
+99     technical_41_d    0.000000
+98     technical_24_d    0.000000
+115        neighbour6    0.000000
+89       technical_44    0.000000
+96     technical_21_d    0.000000
+116        neighbour7    0.000000
+117        neighbour8    0.000000
+93     technical_33_d    0.000000
+91     technical_17_d    0.000000
+90            nbnulls    0.000000
+107    technical_31_d    0.000000
+100     technical_3_d    0.000000
+0           derived_0    0.000000
+72       technical_21    0.000000
+69       technical_17    0.000000
+32     fundamental_35    0.000000
+31     fundamental_34    0.000000
+30     fundamental_33    0.000000
+29     fundamental_32    0.000000
+28     fundamental_31    0.000000
+27     fundamental_30    0.000000
+25     fundamental_25    0.000000
+24     fundamental_24    0.000000
+23     fundamental_23    0.000000
+22     fundamental_22    0.000000
+20     fundamental_20    0.000000
+19     fundamental_19    0.000000
+18     fundamental_18    0.000000
+17     fundamental_17    0.000000
+16     fundamental_16    0.000000
+15     fundamental_15    0.000000
+13     fundamental_13    0.000000
+12     fundamental_12    0.000000
+10     fundamental_10    0.000000
+9       fundamental_8    0.000000
+7       fundamental_5    0.000000
+6       fundamental_2    0.000000
+4           derived_4    0.000000
+3           derived_3    0.000000
+2           derived_2    0.000000
+34     fundamental_37    0.000000
+35     fundamental_39    0.000000
+36     fundamental_40    0.000000
+57        technical_0    0.000000
+68       technical_16    0.000000
+67       technical_14    0.000000
+66       technical_13    0.000000
+65       technical_12    0.000000
+1           derived_1    0.000000
+63        technical_7    0.000000
+62        technical_6    0.000000
+61        technical_5    0.000000
+60        technical_3    0.000000
+59        technical_2    0.000000
+58        technical_1    0.000000
+54     fundamental_59    0.000000
+37     fundamental_41    0.000000
+52     fundamental_56    0.000000
+50     fundamental_54    0.000000
+48     fundamental_52    0.000000
+46     fundamental_50    0.000000
+45     fundamental_49    0.000000
+44     fundamental_48    0.000000
+43     fundamental_47    0.000000
+42     fundamental_46    0.000000
+41     fundamental_45    0.000000
+40     fundamental_44    0.000000
+38     fundamental_42    0.000000
+64       technical_11    0.000000
+551.5s
+199
+
+Score for another fold:  0.0203536890981
+end of training, now predicting
+indice, countplus, reward, np.mean(rewards), info["public_score"]
+580.4s
+200
+100 5 -0.0311538699628 -0.127933471028

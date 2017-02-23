@@ -2,9 +2,12 @@
   <dictionary name="eamag">
     <words>
       <w>featureexpander</w>
+      <w>lastscores</w>
+      <w>lastvalues</w>
       <w>nbnulls</w>
       <w>overfit</w>
       <w>treecols</w>
+      <w>vowpal</w>
       <w>znull</w>
     </words>
   </dictionary>
